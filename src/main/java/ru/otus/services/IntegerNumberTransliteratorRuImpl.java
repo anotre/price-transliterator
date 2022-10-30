@@ -76,14 +76,14 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
     }};
 
     private final Map<Integer, String[]> integerNumberClassNames = new HashMap<>() {{
-        put(0, new String[] {"", "", ""});
-        put(1, new String[] {"тысяча", "тысячи", "тысяч"});
-        put(2, new String[] {"миллион", "миллиона", "миллионов"});
-        put(3, new String[] {"миллиард", "миллиарда", "миллиардов"});
-        put(4, new String[] {"триллион", "триллиона", "триллионов"});
-        put(5, new String[] {"квадриллион", "квадриллиона", "квадриллионов"});
-        put(6, new String[] {"квинтиллион", "квинтиллиона", "квинтиллионов"});
-        put(7, new String[] {"сикстиллион", "сикстиллиона", "сикстиллионов"});
+        put(1, new String[] {"", "", ""});
+        put(2, new String[] {"тысяча", "тысячи", "тысяч"});
+        put(3, new String[] {"миллион", "миллиона", "миллионов"});
+        put(4, new String[] {"миллиард", "миллиарда", "миллиардов"});
+        put(5, new String[] {"триллион", "триллиона", "триллионов"});
+        put(6, new String[] {"квадриллион", "квадриллиона", "квадриллионов"});
+        put(7, new String[] {"квинтиллион", "квинтиллиона", "квинтиллионов"});
+        put(8, new String[] {"сикстиллион", "сикстиллиона", "сикстиллионов"});
 
     }};
     public IntegerNumberTransliteratorRuImpl() {
@@ -97,7 +97,7 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
         Map<Integer, String> transliteratedTriads = new HashMap<>();
 
         for (int i = 0; i < triadList.size(); i++) {
-            transliteratedTriads.put(i, this.transliterateTriad(triadList.get(i), triadList.size() - i - 1));
+            transliteratedTriads.put(i, this.transliterateTriad(triadList.get(i), triadList.size() - i));
             transliteratedIntegerNumber.append(transliteratedTriads.get(i));
 
             if (i != triadList.size() - 1) {
@@ -108,8 +108,9 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
         return transliteratedIntegerNumber.toString();
     }
 
-    private String transliterateTriad(List<Integer> triad, int integerNumberClass) {//
-        final int TENS_RANK = 2;
+    private String transliterateTriad(List<Integer> triad, int integerNumberRankIndex) {//
+        final int TENS_RANK_INDEX = 2;
+        final int UNITS_RANK = 1;
 
         StringBuilder transliteratedString = new StringBuilder("");
 
@@ -120,12 +121,12 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
         List<Integer> triadLocal = this.removeLeadingZeros(triad);
         final int TRIAD_SIZE = triadLocal.size();
 
-        int tens = (int) ((TRIAD_SIZE > TENS_RANK) ? this.getIntegerNumberFromParts(triadLocal.subList(1, triadLocal.size())) : this.getIntegerNumberFromParts(triadLocal));
+        int tens = (int) ((TRIAD_SIZE > TENS_RANK_INDEX) ? this.getIntegerNumberFromParts(triadLocal.subList(1, triadLocal.size())) : this.getIntegerNumberFromParts(triadLocal));
 
         if (TRIAD_SIZE == 1) {
-            transliteratedString.append(this.transliterateUnits(triadLocal.get(0), integerNumberClass));
+            transliteratedString.append(this.transliterateUnits(triadLocal.get(0), integerNumberRankIndex));
             transliteratedString.append(SPACE);
-            transliteratedString.append(this.transliterateIntegerNumberClass(triadLocal, integerNumberClass));
+            transliteratedString.append(this.transliterateIntegerNumberClass(triadLocal, integerNumberRankIndex));
             return transliteratedString.toString();
         }
 
@@ -133,7 +134,7 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
             transliteratedString.append(specificTransliterationMap.get(tens));
         } else {
 
-            transliteratedString.append(this.transliterateUnits(triadLocal.get(triadLocal.size() - 1), integerNumberClass));
+            transliteratedString.append(this.transliterateUnits(triadLocal.get(triadLocal.size() - 1), integerNumberRankIndex));
             transliteratedString.insert(0, SPACE);
             transliteratedString.insert(0, this.transliterateTens(triadLocal.get(triadLocal.size() - 2)));
 
@@ -144,8 +145,10 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
             transliteratedString.insert(0, this.transliterateHundreds(triadLocal.get(triadLocal.size() - 3)));
         }
 
-        transliteratedString.append(SPACE);
-        transliteratedString.append(this.transliterateIntegerNumberClass(triadLocal, integerNumberClass));
+        if (integerNumberRankIndex != UNITS_RANK) {
+            transliteratedString.append(SPACE);
+            transliteratedString.append(this.transliterateIntegerNumberClass(triadLocal, integerNumberRankIndex));
+        }
 
         return transliteratedString.toString();
     }
@@ -214,6 +217,6 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
             }
         }
 
-        return transliteratedClass.insert(0, SPACE).toString();
+        return transliteratedClass.toString();
     }
 }
