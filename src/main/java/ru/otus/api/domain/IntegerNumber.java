@@ -8,4 +8,6 @@ public interface IntegerNumber {
     List<Integer> getIntegerNumberAsList();
 
     List<List<Integer>> getIntegerNumberAsTriadList();
+
+    long getIntegerNumberBeforeRank(int rank);
 }

@@ -15,6 +15,7 @@ public class IntegerNumberImpl implements IntegerNumber {
         this.parsedIntegerNumber = parsedIntegerNumber;
     }
 
+    @Override
     public long getIntegerNumber() {
         long integerNumber = 0;
         int power = this.parsedIntegerNumber.size();
@@ -27,15 +28,16 @@ public class IntegerNumberImpl implements IntegerNumber {
         return integerNumber;
     }
 
+    @Override
     public List<Integer> getIntegerNumberAsList() {
         return this.parsedIntegerNumber;
     }
 
+    @Override
     public List<List<Integer>> getIntegerNumberAsTriadList() {
 
         List<List<Integer>> triadList = new ArrayList<>();
-        int end = this.parsedIntegerNumber.size();
-        int currentEnd = end;
+        int currentEnd = this.parsedIntegerNumber.size();
         int currentStart = this.getCurrentStartIndex(currentEnd);
 
         while (true) {
@@ -52,6 +54,12 @@ public class IntegerNumberImpl implements IntegerNumber {
         Collections.reverse(triadList);
 
         return triadList;
+    }
+
+    @Override
+    public long getIntegerNumberBeforeRank(int rank) {
+        long integerNumber = this.getIntegerNumber();
+        return integerNumber % ((long) Math.pow(10, Math.min(this.parsedIntegerNumber.size(), rank)));
     }
 
     private int getCurrentStartIndex(int currentEndIndex) {
