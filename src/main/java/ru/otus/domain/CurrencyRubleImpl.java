@@ -11,7 +11,7 @@ public class CurrencyRubleImpl implements Currency {
         add("рублей");
     }};
 
-    public List<String> getCurrencyName() {
+    public List<String> getCurrencyNames() {
         return this.currencyName;
     }
 }
