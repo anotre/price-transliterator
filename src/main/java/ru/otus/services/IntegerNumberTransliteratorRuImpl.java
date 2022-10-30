@@ -97,12 +97,18 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
         Map<Integer, String> transliteratedTriads = new HashMap<>();
 
         for (int i = 0; i < triadList.size(); i++) {
-            transliteratedTriads.put(i, this.transliterateTriad(triadList.get(i), triadList.size() - i));
-            transliteratedIntegerNumber.append(transliteratedTriads.get(i));
+            List<Integer> currentTriad = triadList.get(i);
 
-            if (i != triadList.size() - 1) {
+            if (isZeroTriad(currentTriad)) {
+                continue;
+            }
+
+            if (i != 0) {
                 transliteratedIntegerNumber.append(SPACE);
             }
+
+            transliteratedTriads.put(i, this.transliterateTriad(currentTriad, triadList.size() - i));
+            transliteratedIntegerNumber.append(transliteratedTriads.get(i));
         }
 
         return transliteratedIntegerNumber.toString();
@@ -113,10 +119,6 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
         final int UNITS_RANK = 1;
 
         StringBuilder transliteratedString = new StringBuilder("");
-
-        if (this.isZeroTriad(triad)) {
-            return "";
-        }
 
         List<Integer> triadLocal = this.removeLeadingZeros(triad);
         final int TRIAD_SIZE = triadLocal.size();
