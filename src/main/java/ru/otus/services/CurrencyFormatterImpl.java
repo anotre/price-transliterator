@@ -26,8 +26,10 @@ public class CurrencyFormatterImpl implements CurrencyFormatter {
             currencyForm = this.currency.getCurrencyNames().get(2);
         } else if (firstRank == 1) {
             currencyForm = this.currency.getCurrencyNames().get(0);
-        } else {
+        } else if (firstRank >= 2 && firstRank <= 4) {
             currencyForm = this.currency.getCurrencyNames().get(1);
+        } else {
+            currencyForm = this.currency.getCurrencyNames().get(2);
         }
 
         return currencyForm;
