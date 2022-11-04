@@ -90,7 +90,7 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
 
     public String transliterate(IntegerNumber integerNumber) {
 
-        List<List<Integer>> triadList = integerNumber.getIntegerNumberAsTriadList();
+        List<List<Integer>> triadList = integerNumber.getIntegerNumberAbsAsTriadList();
         StringBuilder transliteratedIntegerNumber = new StringBuilder("");
         Map<Integer, String> transliteratedTriads = new HashMap<>();
 

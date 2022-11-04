@@ -18,8 +18,9 @@ public class CurrencyFormatterImpl implements CurrencyFormatter {
         final int EXPONENTIAL_FUNCTION_BASE = 10;
         final int LANGUAGE_SPECIFIC_FROM_INCLUSIVE = 10;
         final int LANGUAGE_SPECIFIC_TO_EXCLUSIVE = 20;
+
         String currencyForm;
-        long integerNumberPart = this.integerNumber.getIntegerNumberBeforeRank(2);
+        long integerNumberPart = this.integerNumber.getIntegerNumberAbsBeforeRank(2);
         long firstRank = integerNumberPart % EXPONENTIAL_FUNCTION_BASE;
 
         if ((integerNumberPart >= LANGUAGE_SPECIFIC_FROM_INCLUSIVE) && (integerNumberPart < LANGUAGE_SPECIFIC_TO_EXCLUSIVE)) {

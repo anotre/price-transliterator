@@ -16,7 +16,7 @@ public class IntegerNumberImpl implements IntegerNumber {
     }
 
     @Override
-    public long getIntegerNumber() {
+    public long getIntegerNumberAbs() {
         long integerNumber = 0;
         int power = this.parsedIntegerNumber.size();
 
@@ -29,12 +29,12 @@ public class IntegerNumberImpl implements IntegerNumber {
     }
 
     @Override
-    public List<Integer> getIntegerNumberAsList() {
+    public List<Integer> getIntegerNumberAbsAsList() {
         return this.parsedIntegerNumber;
     }
 
     @Override
-    public List<List<Integer>> getIntegerNumberAsTriadList() {
+    public List<List<Integer>> getIntegerNumberAbsAsTriadList() {
 
         List<List<Integer>> triadList = new ArrayList<>();
         int currentEnd = this.parsedIntegerNumber.size();
@@ -57,8 +57,8 @@ public class IntegerNumberImpl implements IntegerNumber {
     }
 
     @Override
-    public long getIntegerNumberBeforeRank(int rank) {
-        long integerNumber = this.getIntegerNumber();
+    public long getIntegerNumberAbsBeforeRank(int rank) {
+        long integerNumber = Math.abs(this.getIntegerNumberAbs());
         return integerNumber % ((long) Math.pow(10, Math.min(this.parsedIntegerNumber.size(), rank)));
     }
 

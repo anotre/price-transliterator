@@ -3,11 +3,13 @@ package ru.otus.api.domain;
 import java.util.List;
 
 public interface IntegerNumber {
-    long getIntegerNumber();
+    long getIntegerNumberAbs();
     
-    List<Integer> getIntegerNumberAsList();
+    List<Integer> getIntegerNumberAbsAsList();
 
-    List<List<Integer>> getIntegerNumberAsTriadList();
+    List<List<Integer>> getIntegerNumberAbsAsTriadList();
 
-    long getIntegerNumberBeforeRank(int rank);
+    long getIntegerNumberAbsBeforeRank(int rank);
+
+    boolean isNegative();
 }
