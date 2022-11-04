@@ -7,12 +7,14 @@ import java.util.List;
 import java.lang.Math;
 
 public class IntegerNumberImpl implements IntegerNumber {
+    private final boolean isNegative;
     private final List<Integer> parsedIntegerNumber;
     private final int NUM_IN_CLASS = 3;
     private final int FIRST_INDEX = 0;
     
-    public IntegerNumberImpl(List<Integer> parsedIntegerNumber) {
+    public IntegerNumberImpl(List<Integer> parsedIntegerNumber, boolean isNegative) {
         this.parsedIntegerNumber = parsedIntegerNumber;
+        this.isNegative = isNegative;
     }
 
     @Override
@@ -25,7 +27,7 @@ public class IntegerNumberImpl implements IntegerNumber {
             power--;
         }
 
-        return integerNumber;
+        return (isNegative) ? -integerNumber : integerNumber;
     }
 
     @Override
@@ -64,5 +66,10 @@ public class IntegerNumberImpl implements IntegerNumber {
 
     private int getCurrentStartIndex(int currentEndIndex) {
         return Math.max(currentEndIndex - NUM_IN_CLASS, FIRST_INDEX);
+    }
+
+    @Override
+    public boolean isNegative() {
+        return isNegative;
     }
 }

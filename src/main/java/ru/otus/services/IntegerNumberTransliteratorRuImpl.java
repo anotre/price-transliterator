@@ -94,6 +94,11 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
         StringBuilder transliteratedIntegerNumber = new StringBuilder("");
         Map<Integer, String> transliteratedTriads = new HashMap<>();
 
+        if (integerNumber.isNegative()) {
+            transliteratedIntegerNumber.append(this.transliterateNegativeSign());
+            transliteratedIntegerNumber.append(SPACE);
+        }
+
         for (int i = 0; i < triadList.size(); i++) {
             List<Integer> currentTriad = triadList.get(i);
 
@@ -222,5 +227,9 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
         }
 
         return transliteratedClass.toString();
+    }
+
+    private String transliterateNegativeSign() {
+        return "минус";
     }
 }
