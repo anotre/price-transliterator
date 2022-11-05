@@ -7,18 +7,16 @@ import ru.otus.api.services.PriceTransliterator;
 
 public class PriceTransliteratorImpl implements PriceTransliterator {
     private final String SPACE = " ";
-    IntegerNumber integerNumber;
     IntegerNumberTransliterator transliterator;
     CurrencyFormatter currencyFormatter;
 
-    public PriceTransliteratorImpl(IntegerNumber integerNumber, IntegerNumberTransliterator transliterator, CurrencyFormatter currencyFormatter) {
-        this.integerNumber = integerNumber;
+    public PriceTransliteratorImpl(IntegerNumberTransliterator transliterator, CurrencyFormatter currencyFormatter) {
         this.transliterator = transliterator;
         this.currencyFormatter = currencyFormatter;
     }
 
     @Override
-    public String transliteratePrice() {
-        return this.transliterator.transliterate(this.integerNumber) + SPACE + this.currencyFormatter.format();
+    public String transliteratePrice(IntegerNumber integerNumber) {
+        return this.transliterator.transliterate(integerNumber) + SPACE + this.currencyFormatter.format(integerNumber);
     }
 }
