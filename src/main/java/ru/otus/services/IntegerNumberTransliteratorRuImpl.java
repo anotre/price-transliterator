@@ -113,30 +113,29 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
         return transliteratedIntegerNumber.toString();
     }
 
-    private String transliterateTriad(List<Integer> triad, int integerNumberClassNumber, int numberOfClasses) {//
+    private String transliterateTriad(List<Integer> triad, int integerNumberClassNumber, int numberOfClasses) {
         final int TENS_RANK_INDEX = 2;
-        final int UNITS_RANK = 1;
+        final int UNITS_RANK_INDEX = 1;
 
         StringBuilder transliteratedString = new StringBuilder("");
-
         List<Integer> triadLocal = this.removeLeadingZeros(triad.subList(0, triad.size()));
+        int triadLocalSize = triadLocal.size();
 
-        if (numberOfClasses == UNITS_RANK && triadLocal.size() == 0) {
+        if (numberOfClasses == UNITS_RANK_INDEX && triadLocalSize == 0) {
             triadLocal.add(0);
-        } else if (numberOfClasses != UNITS_RANK && triadLocal.size() == 0) {
+            triadLocalSize = triadLocal.size();
+        } else if (numberOfClasses != UNITS_RANK_INDEX && triadLocalSize == 0) {
             return "";
         }
 
-        final int TRIAD_SIZE = triadLocal.size();
+        int tens = (int) ((triadLocalSize > TENS_RANK_INDEX) ? this.getIntegerNumberFromParts(triadLocal.subList(1, triadLocalSize)) : this.getIntegerNumberFromParts(triadLocal));
 
-        int tens = (int) ((TRIAD_SIZE > TENS_RANK_INDEX) ? this.getIntegerNumberFromParts(triadLocal.subList(1, TRIAD_SIZE)) : this.getIntegerNumberFromParts(triadLocal));
-
-        if (TRIAD_SIZE == UNITS_RANK) {
+        if (triadLocalSize == UNITS_RANK_INDEX) {
             transliteratedString.append(this.transliterateUnits(triadLocal.get(0), integerNumberClassNumber));
 
-            if (integerNumberClassNumber != UNITS_RANK) {
+            if (integerNumberClassNumber != UNITS_RANK_INDEX) {
                 transliteratedString.append(SPACE);
-                transliteratedString.append(this.transliterateIntegerNumberClass(triadLocal, integerNumberClassNumber));
+                transliteratedString.append(this.transliterateIntegerNumberClassByTriad(triadLocal, integerNumberClassNumber));
             }
 
             return transliteratedString.toString();
@@ -145,19 +144,19 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
         if (tens >= LANGUAGE_SPECIFIC_FROM_INCLUSIVE && tens < LANGUAGE_SPECIFIC_TO_INCLUSIVE) {
             transliteratedString.append(specificTransliterationMap.get(tens));
         } else {
-            transliteratedString.append(this.transliterateUnits(triadLocal.get(TRIAD_SIZE - 1), integerNumberClassNumber));
+            transliteratedString.append(this.transliterateUnits(triadLocal.get(triadLocalSize - 1), integerNumberClassNumber));
             transliteratedString.insert(0, SPACE);
-            transliteratedString.insert(0, this.transliterateTens(triadLocal.get(TRIAD_SIZE - 2)));
+            transliteratedString.insert(0, this.transliterateTens(triadLocal.get(triadLocalSize - 2)));
         }
 
-        if (TRIAD_SIZE == 3) {
+        if (triadLocalSize == 3) {
             transliteratedString.insert(0, SPACE);
             transliteratedString.insert(0, this.transliterateHundreds(triadLocal.get(0)));
         }
 
-        if (integerNumberClassNumber != UNITS_RANK) {
+        if (integerNumberClassNumber != UNITS_RANK_INDEX) {
             transliteratedString.append(SPACE);
-            transliteratedString.append(this.transliterateIntegerNumberClass(triadLocal, integerNumberClassNumber));
+            transliteratedString.append(this.transliterateIntegerNumberClassByTriad(triadLocal, integerNumberClassNumber));
         }
 
         return transliteratedString.toString();
@@ -198,11 +197,7 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
         return new ArrayList<Integer>();
     }
 
-    private boolean isZeroTriad(List<Integer> triad) {
-        return this.getIntegerNumberFromParts(triad) == 0;
-    }
-
-    private String transliterateIntegerNumberClass(List<Integer> integerNumber, int classIndex) {
+    private String transliterateIntegerNumberClassByTriad(List<Integer> integerNumberTriad, int classIndex) {
         StringBuilder transliteratedClass = new StringBuilder("");
         final int HUNDREDS_RANK = 100;
         final int TENS_RANK = 10;
@@ -211,11 +206,10 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
             return "";
         }
 
-        long integerNumberLocal = this.getIntegerNumberFromParts(integerNumber) % HUNDREDS_RANK;
+        long integerNumberLocal = this.getIntegerNumberFromParts(integerNumberTriad) % HUNDREDS_RANK;
 
         if (integerNumberLocal > LANGUAGE_SPECIFIC_FROM_INCLUSIVE && integerNumberLocal < LANGUAGE_SPECIFIC_TO_INCLUSIVE) {
             transliteratedClass.append(integerNumberClassNames.get(classIndex)[2]);
-
         } else {
             int lastDigit = (int) integerNumberLocal % TENS_RANK;
             if (lastDigit == 1) {
