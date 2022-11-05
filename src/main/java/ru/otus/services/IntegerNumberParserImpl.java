@@ -13,25 +13,24 @@ public class IntegerNumberParserImpl implements IntegerNumberParser {
     private final static int NUMBER_SUBCLASS_DETERMINATOR = 10;
 
     public IntegerNumber parseIntegerNumber(String integerNumber) throws IOException {
-        boolean isNegative = false;
         StringBuilder strIntegerNumber = new StringBuilder(integerNumber);
-        Character firstSign = strIntegerNumber.charAt(0);
+        boolean isNegative = this.isNegative(strIntegerNumber.toString());
 
-        if (firstSign.equals('-')) {
-            isNegative = true;
+        if (isNegative) {
             strIntegerNumber.deleteCharAt(0);
         }
 
-        List<Integer> parsedIntegerNumber = new ArrayList<Integer>();
         if (integerNumber.matches("\\D")) {
             throw new IOException("Wrong input");
         }
+
         long buffer = Long.parseLong(strIntegerNumber.toString());
 
         if (buffer == 0 && isNegative) {
             isNegative = false;
         }
 
+        List<Integer> parsedIntegerNumber = new ArrayList<>();
         int power = 1;
         do {
             parsedIntegerNumber.add((int) (buffer % NUMBER_SUBCLASS_DETERMINATOR));
@@ -42,5 +41,11 @@ public class IntegerNumberParserImpl implements IntegerNumberParser {
         Collections.reverse(parsedIntegerNumber);
         
         return new IntegerNumberImpl(parsedIntegerNumber, isNegative);
+    }
+
+    private boolean isNegative(String strIntegerNumber) {
+        Character firstSign = strIntegerNumber.charAt(0);
+
+        return firstSign.equals('-');
     }
 }
