@@ -20,7 +20,7 @@ public class IntegerNumberParserImpl implements IntegerNumberParser {
             strIntegerNumber.deleteCharAt(0);
         }
 
-        if (integerNumber.matches("\\D")) {
+        if (strIntegerNumber.toString().matches("^.*\\D.*")) {
             throw new IOException("Wrong input");
         }
 
