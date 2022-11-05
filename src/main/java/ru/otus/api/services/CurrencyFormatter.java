@@ -1,5 +1,7 @@
 package ru.otus.api.services;
 
+import ru.otus.api.domain.IntegerNumber;
+
 public interface CurrencyFormatter {
-    String format();
+    String format(IntegerNumber integerNumber);
 }

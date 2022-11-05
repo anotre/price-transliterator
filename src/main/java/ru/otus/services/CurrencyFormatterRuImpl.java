@@ -4,23 +4,22 @@ import ru.otus.api.domain.Currency;
 import ru.otus.api.domain.IntegerNumber;
 import ru.otus.api.services.CurrencyFormatter;
 
-public class CurrencyFormatterImpl implements CurrencyFormatter {
+public class CurrencyFormatterRuImpl implements CurrencyFormatter {
 
     Currency currency;
-    IntegerNumber integerNumber;
-    public CurrencyFormatterImpl(Currency currency, IntegerNumber integerNumber) {
+    //IntegerNumber integerNumber;
+    public CurrencyFormatterRuImpl(Currency currency) {
         this.currency = currency;
-        this.integerNumber = integerNumber;
     }
 
     @Override
-    public String format() {
+    public String format(IntegerNumber integerNumber) {
         final int EXPONENTIAL_FUNCTION_BASE = 10;
         final int LANGUAGE_SPECIFIC_FROM_INCLUSIVE = 10;
         final int LANGUAGE_SPECIFIC_TO_EXCLUSIVE = 20;
 
         String currencyForm;
-        long integerNumberPart = this.integerNumber.getIntegerNumberAbsBeforeRank(2);
+        long integerNumberPart = integerNumber.getIntegerNumberAbsBeforeRank(2);
         long firstRank = integerNumberPart % EXPONENTIAL_FUNCTION_BASE;
 
         if ((integerNumberPart >= LANGUAGE_SPECIFIC_FROM_INCLUSIVE) && (integerNumberPart < LANGUAGE_SPECIFIC_TO_EXCLUSIVE)) {
