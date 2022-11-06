@@ -9,12 +9,13 @@ import ru.otus.domain.CurrencyRubleImpl;
 public class Main {
     public static void main(String[] args) {
         IOService ioService = new ConsoleIOService();
+        Logger logger = new LoggerStub();
+
         IntegerNumberParser integerNumberParser = new IntegerNumberParserImpl();
         IntegerNumberTransliterator integerNumberTransliterator = new IntegerNumberTransliteratorRuImpl();
         Currency currency = new CurrencyRubleImpl();
         CurrencyFormatterRuImpl currencyFormatter = new CurrencyFormatterRuImpl(currency);
         PriceTransliterator priceTransliterator = new PriceTransliteratorImpl(integerNumberTransliterator, currencyFormatter);
-        Logger logger = new LoggerStub();
         CommandHandler commandHandler = new CommandHandlerImpl(ioService, integerNumberParser, priceTransliterator, logger);
         ApplicationRunner applicationRunner = new ApplicationRunner(ioService, commandHandler);
 
