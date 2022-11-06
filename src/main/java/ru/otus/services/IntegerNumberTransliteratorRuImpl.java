@@ -5,16 +5,20 @@ import ru.otus.api.services.IntegerNumberTransliterator;
 import ru.otus.api.domain.IntegerNumber;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import java.lang.Math;
 
 public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTransliterator {
-    private static final int EXPONENTIAL_FUNCTION_BASE = 10;
     private static final String SPACE = " ";
     private static final int LANGUAGE_SPECIFIC_FROM_INCLUSIVE = 10;
-    private static final int LANGUAGE_SPECIFIC_TO_INCLUSIVE = 20;
+    private static final int LANGUAGE_SPECIFIC_TO_INCLUSIVE = 19;
+
+    private static final int TENS_RANK_INDEX = 2; // сделать enum где будут все три индекса
+    private static final int UNITS_RANK_INDEX = 1;
+    private static final int HUNDREDS_RANK_INDEX = 3;
+    private static final int UNITS_CLASS_INDEX = 1;
 
     private final Map<Integer, String> transliterationUnitsMap = new HashMap<>() {{
         put(0, "ноль");
@@ -42,6 +46,7 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
         put(9, "девять");
     }};
     private final Map<Integer, String> transliterationTensMap = new HashMap<>() {{
+        put(0, "");
         put(1, "десять");
         put(2, "двадцать");
         put(3, "тридцать");
@@ -85,7 +90,6 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
         put(6, new String[] {"квадриллион", "квадриллиона", "квадриллионов"});
         put(7, new String[] {"квинтиллион", "квинтиллиона", "квинтиллионов"});
         put(8, new String[] {"сикстиллион", "сикстиллиона", "сикстиллионов"});
-
     }};
 
     IntegerNumberListProcessor integerNumberListProcessor;
