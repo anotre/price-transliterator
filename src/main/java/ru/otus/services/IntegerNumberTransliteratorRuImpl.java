@@ -135,39 +135,28 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
             return "";
         }
 
-        int tens = (int) ((triadLocalSize > TENS_RANK_INDEX) ? this.getIntegerNumberFromParts(triadLocal.subList(1, triadLocalSize)) : this.getIntegerNumberFromParts(triadLocal));
-
-        if (triadLocalSize == UNITS_RANK_INDEX) {
-            transliteratedString.append(this.transliterateUnits(triadLocal.get(0), integerNumberClassNumber));
-
-            if (integerNumberClassNumber != UNITS_RANK_INDEX) {
-                transliteratedString.append(SPACE);
-                transliteratedString.append(this.transliterateIntegerNumberClassByTriad(triadLocal, integerNumberClassNumber));
-            }
+        if (triadLocalSize == HUNDREDS_RANK_INDEX) {
+            transliteratedStringList.add(this.transliterateHundreds(triadLocal.get(0)));
+        }
 
         int tens = (int) ((triadLocalSize > TENS_RANK_INDEX) ?
                 this.integerNumberListProcessor.getIntegerNumberFromParts(triadLocal.subList(1, triadLocalSize)) :
                 this.integerNumberListProcessor.getIntegerNumberFromParts(triadLocal));
 
-        if (tens >= LANGUAGE_SPECIFIC_FROM_INCLUSIVE && tens < LANGUAGE_SPECIFIC_TO_INCLUSIVE) {
-            transliteratedString.append(specificTransliterationMap.get(tens));
+        if (tens >= LANGUAGE_SPECIFIC_FROM_INCLUSIVE && tens <= LANGUAGE_SPECIFIC_TO_INCLUSIVE) {
+            transliteratedStringList.add(specificTransliterationMap.get(tens));
+        } else if (tens < LANGUAGE_SPECIFIC_FROM_INCLUSIVE) {
+            transliteratedStringList.add(this.transliterateUnits(triadLocal.get(triadLocalSize - 1), integerNumberClassNumber, numberOfClasses, triadLocalSize));
         } else {
-            transliteratedString.append(this.transliterateUnits(triadLocal.get(triadLocalSize - 1), integerNumberClassNumber));
-            transliteratedString.insert(0, SPACE);
-            transliteratedString.insert(0, this.transliterateTens(triadLocal.get(triadLocalSize - 2)));
+            transliteratedStringList.add(this.transliterateTens(triadLocal.get(triadLocalSize - 2)));
+            transliteratedStringList.add(this.transliterateUnits(triadLocal.get(triadLocalSize - 1), integerNumberClassNumber, numberOfClasses, triadLocalSize));
         }
 
-        if (triadLocalSize == 3) {
-            transliteratedString.insert(0, SPACE);
-            transliteratedString.insert(0, this.transliterateHundreds(triadLocal.get(0)));
-        }
+        transliteratedStringList.add(this.transliterateIntegerNumberClassByTriad(triadLocal, integerNumberClassNumber));
 
-        if (integerNumberClassNumber != UNITS_RANK_INDEX) {
-            transliteratedString.append(SPACE);
-            transliteratedString.append(this.transliterateIntegerNumberClassByTriad(triadLocal, integerNumberClassNumber));
-        }
+        transliteratedStringList.removeAll(Arrays.asList(""));
 
-        return transliteratedString.toString();
+        return this.combineStrings(transliteratedStringList);
     }
 
     private String transliterateUnits(int unitsRankNumber, int integerNumberClassIndex, int numberOfClasses, int triadSize) {
