@@ -12,7 +12,8 @@ public class Main {
         Logger logger = new LoggerStub();
 
         IntegerNumberParser integerNumberParser = new IntegerNumberParserImpl();
-        IntegerNumberTransliterator integerNumberTransliterator = new IntegerNumberTransliteratorRuImpl();
+        IntegerNumberListProcessor integerNumberListProcessor = new IntegerNumberListProcessorImpl();
+        IntegerNumberTransliterator integerNumberTransliterator = new IntegerNumberTransliteratorRuImpl(integerNumberListProcessor);
         Currency currency = new CurrencyRubleImpl();
         CurrencyFormatterRuImpl currencyFormatter = new CurrencyFormatterRuImpl(currency);
         PriceTransliterator priceTransliterator = new PriceTransliteratorImpl(integerNumberTransliterator, currencyFormatter);
