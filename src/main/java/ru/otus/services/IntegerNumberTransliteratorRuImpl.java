@@ -170,8 +170,16 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
         return transliteratedString.toString();
     }
 
-    private String transliterateUnits(int unitsRankNumber, int integerNumberClass) {
-        if (integerNumberClass != 2) {
+    private String transliterateUnits(int unitsRankNumber, int integerNumberClassIndex, int numberOfClasses, int triadSize) {
+        if (triadSize == UNITS_RANK_INDEX && numberOfClasses != UNITS_CLASS_INDEX && unitsRankNumber == 0) {
+            return this.transliterationUnitsMap.get(unitsRankNumber);
+        }
+
+        if (unitsRankNumber == 0) {
+            return "";
+        }
+
+        if (integerNumberClassIndex != TENS_RANK_INDEX) {
             return this.transliterationUnitsMap.get(unitsRankNumber);
         } else {
             return this.transliterationSpecificUnitsMap.get(unitsRankNumber);
