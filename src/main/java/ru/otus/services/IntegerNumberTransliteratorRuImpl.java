@@ -1,5 +1,6 @@
 package ru.otus.services;
 
+import ru.otus.api.services.IntegerNumberListProcessor;
 import ru.otus.api.services.IntegerNumberTransliterator;
 import ru.otus.api.domain.IntegerNumber;
 
@@ -86,7 +87,12 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
         put(8, new String[] {"сикстиллион", "сикстиллиона", "сикстиллионов"});
 
     }};
-    public IntegerNumberTransliteratorRuImpl() {}
+
+    IntegerNumberListProcessor integerNumberListProcessor;
+
+    public IntegerNumberTransliteratorRuImpl(IntegerNumberListProcessor integerNumberListProcessor) {
+        this.integerNumberListProcessor = integerNumberListProcessor;
+    }
 
     public String transliterate(IntegerNumber integerNumber) {
 
@@ -114,11 +120,8 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
     }
 
     private String transliterateTriad(List<Integer> triad, int integerNumberClassNumber, int numberOfClasses) {
-        final int TENS_RANK_INDEX = 2;
-        final int UNITS_RANK_INDEX = 1;
-
-        StringBuilder transliteratedString = new StringBuilder("");
-        List<Integer> triadLocal = this.removeLeadingZeros(triad.subList(0, triad.size()));
+        List<String> transliteratedStringList = new ArrayList<>();
+        List<Integer> triadLocal = this.integerNumberListProcessor.removeLeadingZeros(triad.subList(0, triad.size()));
         int triadLocalSize = triadLocal.size();
 
         if (numberOfClasses == UNITS_RANK_INDEX && triadLocalSize == 0) {
@@ -138,8 +141,9 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
                 transliteratedString.append(this.transliterateIntegerNumberClassByTriad(triadLocal, integerNumberClassNumber));
             }
 
-            return transliteratedString.toString();
-        }
+        int tens = (int) ((triadLocalSize > TENS_RANK_INDEX) ?
+                this.integerNumberListProcessor.getIntegerNumberFromParts(triadLocal.subList(1, triadLocalSize)) :
+                this.integerNumberListProcessor.getIntegerNumberFromParts(triadLocal));
 
         if (tens >= LANGUAGE_SPECIFIC_FROM_INCLUSIVE && tens < LANGUAGE_SPECIFIC_TO_INCLUSIVE) {
             transliteratedString.append(specificTransliterationMap.get(tens));
@@ -206,7 +210,7 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
             return "";
         }
 
-        long integerNumberLocal = this.getIntegerNumberFromParts(integerNumberTriad) % HUNDREDS_RANK;
+        long integerNumberLocal = this.integerNumberListProcessor.getIntegerNumberFromParts(integerNumberTriad) % HUNDREDS_RANK;
 
         if (integerNumberLocal > LANGUAGE_SPECIFIC_FROM_INCLUSIVE && integerNumberLocal <= LANGUAGE_SPECIFIC_TO_INCLUSIVE) {
             transliteratedClass = integerNumberClassNames.get(classIndex)[2];
