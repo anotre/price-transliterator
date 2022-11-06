@@ -227,4 +227,20 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
     private String transliterateNegativeSign() {
         return "минус";
     }
+
+    private String combineStrings(List<String> stringList) {
+        StringBuilder outputString = new StringBuilder();
+        for (int i = 0; i < stringList.size(); i++) {
+            String stringBuffer = stringList.get(i);
+
+            if (!stringBuffer.equalsIgnoreCase("")) {
+                outputString.append(stringBuffer);
+            }
+
+            if (i < stringList.size() - 1) {
+                outputString.append(SPACE);
+            }
+        }
+        return outputString.toString();
+    }
 }
