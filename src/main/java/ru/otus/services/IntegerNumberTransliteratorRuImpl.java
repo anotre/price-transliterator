@@ -198,7 +198,7 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
     }
 
     private String transliterateIntegerNumberClassByTriad(List<Integer> integerNumberTriad, int classIndex) {
-        StringBuilder transliteratedClass = new StringBuilder("");
+        String transliteratedClass;
         final int HUNDREDS_RANK = 100;
         final int TENS_RANK = 10;
 
@@ -208,16 +208,16 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
 
         long integerNumberLocal = this.getIntegerNumberFromParts(integerNumberTriad) % HUNDREDS_RANK;
 
-        if (integerNumberLocal > LANGUAGE_SPECIFIC_FROM_INCLUSIVE && integerNumberLocal < LANGUAGE_SPECIFIC_TO_INCLUSIVE) {
-            transliteratedClass.append(integerNumberClassNames.get(classIndex)[2]);
+        if (integerNumberLocal > LANGUAGE_SPECIFIC_FROM_INCLUSIVE && integerNumberLocal <= LANGUAGE_SPECIFIC_TO_INCLUSIVE) {
+            transliteratedClass = integerNumberClassNames.get(classIndex)[2];
         } else {
             int lastDigit = (int) integerNumberLocal % TENS_RANK;
             if (lastDigit == 1) {
-                transliteratedClass.append(integerNumberClassNames.get(classIndex)[0]);
+                transliteratedClass = integerNumberClassNames.get(classIndex)[0];
             } else if (lastDigit >= 2 && lastDigit <= 4) {
-                transliteratedClass.append(integerNumberClassNames.get(classIndex)[1]);
+                transliteratedClass = integerNumberClassNames.get(classIndex)[1];
             } else {
-                transliteratedClass.append(integerNumberClassNames.get(classIndex)[2]);
+                transliteratedClass = integerNumberClassNames.get(classIndex)[2];
             }
         }
 
