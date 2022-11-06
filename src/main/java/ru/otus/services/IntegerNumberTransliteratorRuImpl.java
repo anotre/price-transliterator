@@ -102,25 +102,20 @@ public class IntegerNumberTransliteratorRuImpl implements IntegerNumberTranslite
 
         List<List<Integer>> triadList = integerNumber.getIntegerNumberAbsAsTriadList();
         StringBuilder transliteratedIntegerNumber = new StringBuilder("");
-        Map<Integer, String> transliteratedTriads = new HashMap<>();
+        List<String> transliteratedIntegerNumberList = new ArrayList<>();
+
 
         if (integerNumber.isNegative()) {
-            transliteratedIntegerNumber.append(this.transliterateNegativeSign());
-            transliteratedIntegerNumber.append(SPACE);
+            transliteratedIntegerNumberList.add(this.transliterateNegativeSign());
         }
 
         for (int i = 0; i < triadList.size(); i++) {
             List<Integer> currentTriad = triadList.get(i);
-            transliteratedTriads.put(i, this.transliterateTriad(currentTriad, triadList.size() - i, triadList.size()));
-            transliteratedIntegerNumber.append(transliteratedTriads.get(i));
-
-            if (transliteratedTriads.get(i).equals("") || i == triadList.size() - 1) {
-                continue;
-            }
-
-            transliteratedIntegerNumber.append(SPACE);
+            transliteratedIntegerNumberList.add(this.transliterateTriad(currentTriad, triadList.size() - i, triadList.size()));
         }
-        return transliteratedIntegerNumber.toString();
+
+        transliteratedIntegerNumberList.removeAll(Arrays.asList(""));
+        return this.combineStrings(transliteratedIntegerNumberList);
     }
 
     private String transliterateTriad(List<Integer> triad, int integerNumberClassNumber, int numberOfClasses) {
