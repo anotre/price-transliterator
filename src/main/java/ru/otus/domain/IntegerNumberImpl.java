@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.lang.Math;
+import java.util.Objects;
 
 public class IntegerNumberImpl implements IntegerNumber {
     private final boolean isNegative;
@@ -71,5 +72,17 @@ public class IntegerNumberImpl implements IntegerNumber {
     @Override
     public boolean isNegative() {
         return isNegative;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof IntegerNumberImpl that)) return false;
+        return this.isNegative == that.isNegative && this.getIntegerNumberAbs() == that.getIntegerNumberAbs();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(isNegative, parsedIntegerNumber);
     }
 }
