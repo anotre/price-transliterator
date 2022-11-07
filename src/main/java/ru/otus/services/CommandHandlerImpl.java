@@ -48,11 +48,9 @@ public class CommandHandlerImpl implements CommandHandler {
         ioService.outputString(outputString);
     }
 
-    @Override
-    public void handleInputError(IOException exception) {
+    private void handleInputError(IOException exception) {
         final String INPUT_ERROR_MESSAGE = "Incorrect input. Please, try again.";
         this.logger.logExceptionMessage(exception);
         this.ioService.outputString(INPUT_ERROR_MESSAGE);
-
     }
 }
