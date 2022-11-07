@@ -3,7 +3,7 @@ package ru.otus.api.domain;
 import java.util.List;
 
 public interface IntegerNumber {
-    long getIntegerNumberAbs();
+    long getIntegerNumber();
     
     List<Integer> getIntegerNumberAbsAsList();
 

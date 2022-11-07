@@ -19,7 +19,7 @@ public class IntegerNumberImpl implements IntegerNumber {
     }
 
     @Override
-    public long getIntegerNumberAbs() {
+    public long getIntegerNumber() {
         long integerNumber = 0;
         int power = this.parsedIntegerNumber.size();
 
@@ -61,7 +61,7 @@ public class IntegerNumberImpl implements IntegerNumber {
 
     @Override
     public long getIntegerNumberAbsBeforeRank(int rank) {
-        long integerNumber = Math.abs(this.getIntegerNumberAbs());
+        long integerNumber = Math.abs(this.getIntegerNumber());
         return integerNumber % ((long) Math.pow(10, Math.min(this.parsedIntegerNumber.size(), rank)));
     }
 
@@ -78,7 +78,7 @@ public class IntegerNumberImpl implements IntegerNumber {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof IntegerNumberImpl that)) return false;
-        return this.isNegative == that.isNegative && this.getIntegerNumberAbs() == that.getIntegerNumberAbs();
+        return this.isNegative == that.isNegative && this.getIntegerNumber() == that.getIntegerNumber();
     }
 
     @Override
