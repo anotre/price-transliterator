@@ -17,7 +17,8 @@ public class Main {
         Currency currency = new CurrencyRubleImpl();
         CurrencyFormatterRuImpl currencyFormatter = new CurrencyFormatterRuImpl(currency);
         PriceTransliterator priceTransliterator = new PriceTransliteratorImpl(integerNumberTransliterator, currencyFormatter);
-        CommandHandler commandHandler = new CommandHandlerImpl(ioService, integerNumberParser, priceTransliterator, logger);
+        PriceTransliterator priceTransliteratorProxy = new PriceTransliteratorProxy(priceTransliterator);
+        CommandHandler commandHandler = new CommandHandlerImpl(ioService, integerNumberParser, priceTransliteratorProxy, logger);
         ApplicationRunner applicationRunner = new ApplicationRunner(ioService, commandHandler);
 
         applicationRunner.run();
