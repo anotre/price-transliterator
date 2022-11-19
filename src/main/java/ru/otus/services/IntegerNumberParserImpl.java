@@ -14,6 +14,11 @@ public class IntegerNumberParserImpl implements IntegerNumberParser {
 
     public IntegerNumber parseIntegerNumber(String integerNumber) throws IOException {
         StringBuilder strIntegerNumber = new StringBuilder(integerNumber);
+
+        if (strIntegerNumber.isEmpty()) {
+            throw new IOException("Wrong input");
+        }
+
         boolean isNegative = this.isNegative(strIntegerNumber.toString());
 
         if (isNegative) {
